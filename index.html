@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prova Prática Front-end</title>
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body>
+    <main class="container">
+      <button class="btn_novo" id="novoRegistro">Novo Registro</button>
+
+      <table class="tabela">
+        <thead>
+          <tr class="tabela__linha">
+            <th class="tabela__header">ID</th>
+            <th class="tabela__header">NOME</th>
+            <th class="tabela__header">EMAIL</th>
+            <th class="tabela__header">AÇÕES</th>
+          </tr>
+        </thead>
+
+        <tbody id="corpoTabela"></tbody>
+      </table>
+
+      <div class="modal" id="modal">
+        <div class="modal__caixa">
+          <header class="modal__header">
+            <h2>Registro</h2>
+            <span class="modal__fechar" id="fecharModal">&#10006;</span>
+          </header>
+          <form class="modal__formulario">
+            <input
+              type="text"
+              class="modal__input"
+              id="inputNome"
+              placeholder="Digite o Nome"
+            />
+            <input
+              type="email"
+              class="modal__input"
+              id="inputEmail"
+              placeholder="Digite o Email"
+            />
+          </form>
+          <footer class="modal__footer">
+            <button class="modal__btn modal__btn-novo" id="postNovoRegistro" type="button">
+              Salvar
+            </button>
+            <button
+              class="modal__btn modal__btn-editar"
+              id="postEditarRegistro"
+              type="button"
+            >
+              Editar
+            </button>
+            <button class="modal__btn" id="cancelarNovoRegistro" type="button">
+              Cancelar
+            </button>
+          </footer>
+        </div>
+      </div>
+    </main>
+
+    <script type="module" src="js/main.js"></script>
+    <script type="module" src="js/modal.js"></script>
+  </body>
+</html>
