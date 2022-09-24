@@ -7,6 +7,7 @@ function renderizarTabela(dados) {
                     <td class="tabela__dado" id="dadoID">${dado.id}</td>
                     <td class="tabela__dado" id="dadoNome">${dado.name}</td>
                     <td class="tabela__dado" id="dadoEmail">${dado.email}</td>
+                    <td class="tabela__dado desativo" id="dadoGenero">${dado.gender}</td>
                     <td class="tabela__dado">
                         <button class="tabela__btn" id="editarBtn" type="button">Editar</button>
                         <button class="tabela__btn" id="excluirBtn" type="button">Excluir</button>
@@ -18,17 +19,16 @@ function renderizarTabela(dados) {
 }
 
 const apiUrl = "https://gorest.co.in/public/v2/users";
-const accessToken =
-  "?access-token=a83fc3b79cb476272dabc5ad63abbe8ae99b0f5e6ee1ab71eef854f474fd968b";
 
 const corpoTabela = document.getElementById("corpoTabela");
 let dadosTabela = "";
 
 const valueInputNome = document.getElementById("inputNome");
 const valueInputEmail = document.getElementById("inputEmail");
+const valueInputGenero = document.getElementById("inputGenero");
 
 //-----GET-READ----:
-fetch(apiUrl + accessToken)
+fetch(apiUrl)
   .then((resposta) => resposta.json())
   .then((dados) => renderizarTabela(dados));
 
@@ -40,13 +40,17 @@ corpoTabela.addEventListener("click", (e) => {
 
   //-----DELETE----:
   if (btnExcluirPressionado) {
-    fetch(`${apiUrl}/${id}/${accessToken}`, {
+    fetch(`${apiUrl}/${id}`, {
       method: "DELETE",
+      headers: {
+        Authorization:
+          "Bearer a83fc3b79cb476272dabc5ad63abbe8ae99b0f5e6ee1ab71eef854f474fd968b",
+      },
     })
       .then((resposta) => resposta.JSON)
       .then(() => location.reload());
   }
-  //-----PUSH-UPDATE----:
+  //-----PUT-UPDATE----:
   if (btnEditarPressionado) {
     let elemento = document.querySelector(".modal__btn-novo");
     ativarModal(elemento);
@@ -54,23 +58,27 @@ corpoTabela.addEventListener("click", (e) => {
       e.target.parentElement.parentElement.children.dadoNome.textContent;
     valueInputEmail.value =
       e.target.parentElement.parentElement.children.dadoEmail.textContent;
+    valueInputGenero.value =
+      e.target.parentElement.parentElement.children.dadoGenero.textContent;
 
     const btnEditar = document.getElementById("postEditarRegistro");
     btnEditar.addEventListener("click", () => {
-      fetch(`${apiUrl}/${id}/${accessToken}`, {
-        method: "PATCH",
+      fetch(`${apiUrl}/${id}`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          Authorization:
+            "Bearer a83fc3b79cb476272dabc5ad63abbe8ae99b0f5e6ee1ab71eef854f474fd968b",
         },
         body: JSON.stringify({
           name: valueInputNome.value,
           email: valueInputEmail.value,
-          gender: "male",
+          gender: valueInputGenero.value,
           status: "active",
         }),
       })
-      .then(resposta => resposta.json())
-      .then(() => location.reload())
+        .then((resposta) => resposta.json())
+        .then(() => location.reload());
     });
   }
 });
@@ -78,15 +86,17 @@ corpoTabela.addEventListener("click", (e) => {
 //-----POST-CREATE----:
 const btnNovoRegistro = document.getElementById("postNovoRegistro");
 btnNovoRegistro.addEventListener("click", () => {
-  fetch(apiUrl + accessToken, {
+  fetch(apiUrl, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization:
+        "Bearer a83fc3b79cb476272dabc5ad63abbe8ae99b0f5e6ee1ab71eef854f474fd968b",
     },
     body: JSON.stringify({
       name: valueInputNome.value,
       email: valueInputEmail.value,
-      gender: "male",
+      gender: valueInputGenero.value,
       status: "active",
     }),
   })
